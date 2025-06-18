@@ -18,22 +18,31 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/api/:date?', function(req, res) {
-  // if date is not provided defaults to current date
-  const param = req.params.date === undefined ? Date.now() : req.params.date
-  // if date is a numerical value (ie: unix timestamp) parses to int
-  const date = new Date(isNaN(param) ? param : parseInt(param))
+// app.get('/api/:date?', function(req, res) {
+//   // if date is not provided defaults to current date
+//   const param = req.params.date === undefined ? Date.now() : req.params.date
+//   // if date is a numerical value (ie: unix timestamp) parses to int
+//   const date = new Date(isNaN(param) ? param : parseInt(param))
+//
+//   if (isNaN(date)) {
+//     res.json({
+//       "error": "Invalid Date"
+//     })
+//   } else {
+//     res.json({
+//       "unix": date.getTime(),
+//       "utc": date.toUTCString()
+//     })
+//   }
+// });
 
-  if (isNaN(date)) {
-    res.json({
-      "error": "Invalid Date"
-    })
-  } else {
-    res.json({
-      "unix": date.getTime(),
-      "utc": date.toUTCString()
-    })
-  }
+app.get('/api/whoami', function(req, res) {
+  // returns the user's IP address, language, and software
+  res.json({
+    "ipaddress": req.ip,
+    "language": req.headers['accept-language'],
+    "software": req.headers['user-agent']
+  });
 });
 
 // Listen on port set in environment variable or default to 3000
