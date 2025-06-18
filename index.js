@@ -8,8 +8,9 @@ const path = require('path');
 var express = require('express');
 var app = express();
 
-// app.use(express.json())
-app.use(express.text());
+app.use(express.json());
+// app.use(express.text());
+app.use(express.urlencoded({ extended: true })); // support encoded bodies
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -65,8 +66,7 @@ function isValidUrl(url) {
 const STORAGE_PATH = path.join(__dirname, 'urls.json');
 
 app.post('/api/shorturl', async (req, res) => {
-  // const url = req.body.url
-  const url = req.body;
+  const url = req.body.url;
 
   if (!isValidUrl(url)) {
     return res.json({ error: 'invalid url' });
